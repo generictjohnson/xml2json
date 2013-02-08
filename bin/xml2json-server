@@ -4,6 +4,7 @@ import argparse
 import cStringIO
 import json
 import logging
+import os
 
 from flask import abort, Flask, jsonify, request
 import requests
@@ -43,4 +44,5 @@ def index():
 
     return jsonify(data)
 
-app.run(debug=args.debug)
+port = os.environ.get('port', 8000)
+app.run(debug=args.debug, host='0.0.0.0', port=port)
