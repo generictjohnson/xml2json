@@ -76,5 +76,10 @@ def parse_xml(xml):
 
     # Get an iterator over the XML file, and recurse into the XML structure
     iterator = lxml.etree.iterparse(xml, events=events)
-    return recurse_xml(iterator)
+
+    try:
+        data = recurse_xml(iterator)
+        return data, None
+    except lxml.etree.XMLSyntaxError as se:
+        return None, 'There is a syntax error in the XML file.'
 

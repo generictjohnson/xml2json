@@ -43,9 +43,12 @@ elif args.url:
 else:
     xml = sys.stdin
 
-data = parse_xml(xml)
+data, error = parse_xml(xml)
 
-if args.output:
-    json.dump(data, args.output)
+if error is not None:
+    logging.error(error)
 else:
-    print json.dumps(data, indent=2, sort_keys=True)
+    if args.output:
+        json.dump(data, args.output)
+    else:
+        print json.dumps(data, indent=2, sort_keys=True)

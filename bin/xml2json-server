@@ -40,8 +40,11 @@ def index():
         abort(400, str(e))
 
     xml = BytesIO(response.text.encode('utf-8'))
-    data = parse_xml(xml)
+    data, error = parse_xml(xml)
 
+    if error is not None:
+        abort(400, error)
+        
     return jsonify(data)
 
 port = int(os.environ.get('PORT', 8000))
