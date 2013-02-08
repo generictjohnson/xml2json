@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
-import cStringIO
+from io import BytesIO
 import logging
 import json
 import sys
@@ -38,10 +38,10 @@ elif args.url:
             response.status_code, args.url))
         sys.exit(1)
 
-    xml = cStringIO.StringIO(response.text)
+    xml = BytesIO(response.text.encode('utf-8'))
 
 else:
-    xml = cStringIO.StringIO(sys.stdin.read())
+    xml = sys.stdin
 
 data = parse_xml(xml)
 
