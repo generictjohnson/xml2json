@@ -27,7 +27,7 @@ def simplify(data):
 
         yield k, v
 
-def recurse_xml(iterator):
+def recurse_xml(iterator, parent_attributes=None):
     '''Recurse into the XML, building up a dictionary structure of accumulated
     data.
 
@@ -37,12 +37,12 @@ def recurse_xml(iterator):
     data = defaultdict(list)
     for action, element in iterator:
         if 'start' == action:
-            # Add the attributes in the opening tag
-            for k, v in element.attrib.iteritems():
-                data['@' + k] = v
+            # Get the attributes in the opening tag and pass them into the 
+            # recursive call.
+            attributes = dict(('@'+k, v) for k, v in element.attrib.iteritems())
 
             # Recurse into the XML structure
-            data[element.tag].append(recurse_xml(iterator))
+            data[element.tag].append(recurse_xml(iterator, attributes))
         
         if 'end' == action:
             # Get the text between the opening and closing tag and cast it to
@@ -51,6 +51,10 @@ def recurse_xml(iterator):
 
             # Clear the element - we are done with it
             element.clear()
+
+            # Update the data dict with any attributes that was in the parent's
+            # opening tag.
+            data.update(parent_attributes)
 
             # If data has key/value pairs in it, then this element is not a leaf
             # node. Add the text (if it is present) to the key value pairs and
