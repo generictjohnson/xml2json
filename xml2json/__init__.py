@@ -10,14 +10,14 @@ def cast(string):
     @param string: str
         The string to cast.'''
 
-    if '' == string.strip():
+    if string is None or '' == string.strip():
         return None
 
     try:
         return json.JSONDecoder().decode(string)
     except ValueError:
         pass
-        
+
     return string
 
 def simplify(data):
