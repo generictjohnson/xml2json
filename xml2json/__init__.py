@@ -47,7 +47,7 @@ def recurse_xml(iterator, parent_attributes=None):
         if 'start' == action:
             # Get the attributes in the opening tag and pass them into the 
             # recursive call.
-            attributes = dict(('@'+k, v) for k, v in element.attrib.iteritems())
+            attributes = dict(('@'+k, cast(v)) for k, v in element.attrib.iteritems())
 
             # Recurse into the XML structure
             data[element.tag].append(recurse_xml(iterator, attributes))
