@@ -33,7 +33,7 @@ if args.file:
 elif args.url:
     response = requests.get(args.url)
 
-    if 200 != resonse.status_code:
+    if 200 != response.status_code:
         logging.error('HTTP error %d: could not retrieve file at "%s"' % (
             response.status_code, args.url))
         sys.exit(1)
@@ -43,18 +43,9 @@ elif args.url:
 else:
     xml = cStringIO.StringIO(sys.stdin.read())
 
-    # # Right now stdin is a pipe, which has an EOF - if we do not change it, 
-    # # then the # interactive console will exit immediately - so we set stdin 
-    # # back to the console (set it away from the pipe)
-    # if sys.platform in ('win32', 'cygwin'):
-    #     sys.stdin = open('CON')
-    # else:
-    #     sys.stdin = open('/dev/tty')
-
 data = parse_xml(xml)
 
 if args.output:
     json.dump(data, args.output)
 else:
-    print data
     print json.dumps(data, indent=2, sort_keys=True)
