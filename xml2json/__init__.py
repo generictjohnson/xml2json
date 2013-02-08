@@ -77,3 +77,4 @@ def parse_xml(xml):
     # Get an iterator over the XML file, and recurse into the XML structure
     iterator = lxml.etree.iterparse(xml, events=events)
     return recurse_xml(iterator)
+
