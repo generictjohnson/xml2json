@@ -1,5 +1,6 @@
 from collections import defaultdict
 import logging
+import json
 
 import lxml.etree
 
@@ -12,6 +13,11 @@ def cast(string):
     if '' == string.strip():
         return None
 
+    try:
+        return json.JSONDecoder().decode(string)
+    except ValueError:
+        pass
+        
     return string
 
 def simplify(data):
@@ -32,7 +38,9 @@ def recurse_xml(iterator, parent_attributes=None):
     data.
 
     @param iterator: lxml.etree.iterparse iterator
-        The iterator over XML events.'''
+        The iterator over XML events.
+    @param parent_attributes: optional, dict
+        The attributes, if any, inside the opening tag of the parent element.'''
 
     data = defaultdict(list)
     for action, element in iterator:
