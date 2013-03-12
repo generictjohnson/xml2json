@@ -1,1 +1,1 @@
-web: bin/xml2json-server --debug
+web: bin/xml2json-server
